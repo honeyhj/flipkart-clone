@@ -21,7 +21,6 @@ mongoose
     .then(() => {
         console.log('database connected');
     });
-
     const userRegistration = require('./routes/userRoute'); 
 
     app.use('/',userRegistration);

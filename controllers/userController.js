@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require('bcrypt');
+const shortid = require("shortid");
 
 const userRegistration = (req,res)=>{
     const {
@@ -27,10 +28,9 @@ const userRegistration = (req,res)=>{
                     const info = new User({
                         firstName,
                         lastName,
-                        userName,
+                        userName:shortid.generate(),
                         email,
                         password:hash,
-                        confirmPassword,
                         profilePicture,
                         role,
                         contactNumber,

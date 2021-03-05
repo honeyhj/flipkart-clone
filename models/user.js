@@ -1,33 +1,36 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
     firstName:{
         type:String,
         trim:true,
-        // required:true,
+        required:true,
         minlength:3,
     },
     lastName:{
         type:String,
         trim:true,
-        // required:true,
+        required:true,
         minlength:3,
     },
     userName:{
-        type:String,
-        trim:true,
-        // required:true,
-        unique:true
+        type: String,
+        required: true,
+        trim: true,
+        unique: true,
+        index: true,
+        lowercase: true,
     },
     email:{
         type:String,
         trim:true,
-        // required:true,
+        required:true,
         unique:true
     },
     password:{
         type:String,
-        // required:true,
+        required:true,
     },
     profilePicture:{
         type:String,
@@ -41,5 +44,15 @@ const UserSchema = new mongoose.Schema({
         type:String,
     },
 },{timeStamp:true})
+
+UserSchema.virtual('fullName').get(function(){
+    return `${this.firstName} ${this.lastName}`
+}) 
+UserSchema.methods = {
+    authenticate: async function (password){
+        return await bcrypt.compare(password, this.password)
+    }
+}
+
 const User = mongoose.model('User',UserSchema)
 module.exports = User;
