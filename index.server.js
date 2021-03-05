@@ -23,13 +23,13 @@ mongoose
     });
 
     const userRegistration = require('./routes/userRoute'); 
+    const adminRegistration = require('./admin/adminRoute'); 
 
-    app.use('/',userRegistration);
+    app.use('/api',userRegistration);
+    app.use('/api',adminRegistration);
 
 
-app.get('/',(req,res) => {
-    res.send('hello world')
-})
+
 app.listen(process.env.PORT,()=>{
     console.log(`server is listening on port ${process.env.PORT}`);
 })
