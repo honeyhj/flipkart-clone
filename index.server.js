@@ -5,6 +5,7 @@ env.config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-Parser');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -23,9 +24,12 @@ mongoose
     });
     const userRegistration = require('./routes/userRoute'); 
     const adminRegistration = require('./admin/adminRoute'); 
+    const addCategory = require('./routes/categoryRoute'); 
 
+    app.use("/uploads/", express.static(path.join(__dirname, "uploads")));
     app.use('/api',userRegistration);
     app.use('/api',adminRegistration);
+    app.use('/api',addCategory);
 
 
 
