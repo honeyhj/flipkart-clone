@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require("bcrypt");
-
 const UserSchema = new mongoose.Schema({
     firstName:{
         type:String,
@@ -45,14 +44,15 @@ const UserSchema = new mongoose.Schema({
     },
 },{timeStamp:true})
 
-UserSchema.virtual('fullName').get(function(){
-    return `${this.firstName} ${this.lastName}`
-}) 
+UserSchema.virtual("fullName").get(function () {
+    return `${this.firstName} ${this.lastName}`;
+  });
+
 UserSchema.methods = {
-    authenticate: async function (password){
-        return await bcrypt.compare(password, this.password)
-    }
-}
+    authenticate: async function (password) {
+      return await bcrypt.compare(password, this.password);
+    },
+  };
 
 const User = mongoose.model('User',UserSchema)
 module.exports = User;
