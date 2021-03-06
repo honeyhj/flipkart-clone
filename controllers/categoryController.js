@@ -3,7 +3,7 @@ var slugify = require('slugify');
 const shortid = require("shortid");
 
 const addCategory = (req,res) => {
-    console.log(req.body);
+    console.log(req.body,req.file);
     
     const {
     name,
@@ -20,7 +20,6 @@ const addCategory = (req,res) => {
         // createdBy:req.user._id,
     })
     // category.save()
-
 }
 
 module.exports = {
