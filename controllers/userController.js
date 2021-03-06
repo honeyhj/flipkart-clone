@@ -72,7 +72,8 @@ const userRegistration = async (req, res) => {
 }
 
 const userLogin = (req, res) => {
-
+    console.log(req.body);
+    
     User.findOne({
         email: req.body.email
     }).exec(async (error, user) => {
@@ -82,7 +83,6 @@ const userLogin = (req, res) => {
         if (user) {
             const isPassword = await user.authenticate(req.body.password);
             if (isPassword && user.role === "user") {
-
                 // const token = jwt.sign(
                 //   { _id: user._id, role: user.role },
                 //   process.env.JWT_SECRET,

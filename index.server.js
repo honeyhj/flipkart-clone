@@ -24,12 +24,14 @@ mongoose
     });
     const userRegistration = require('./routes/userRoute'); 
     const adminRegistration = require('./admin/adminRoute'); 
-    const addCategory = require('./routes/categoryRoute'); 
+    const categoryRoute = require('./routes/categoryRoute'); 
+    const productRoute = require('./routes/productRoute'); 
 
     app.use("/uploads/", express.static(path.join(__dirname, "uploads")));
     app.use('/api',userRegistration);
     app.use('/api',adminRegistration);
-    app.use('/api',addCategory);
+    app.use('/api',categoryRoute);
+    app.use('/api',productRoute);
 
 
 
