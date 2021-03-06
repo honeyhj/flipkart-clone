@@ -1,9 +1,9 @@
 const Category = require("../models/category");
-var slugify = require('slugify');
+// var slugify = require('slugify');
 const shortid = require("shortid");
 
 const addCategory = (req,res) => {
-    console.log(req.body);
+    console.log(req.file);
     
     const {
     name,
@@ -13,7 +13,7 @@ const addCategory = (req,res) => {
     } = req.body;
     const category = new Category({
         name,
-        slug: `${slugify(req.body.name)}-${shortid.generate()}`,
+        // slug: `${slugify(req.body.name)}-${shortid.generate()}`,
         // type,
         // categoryImage,
         // parentId,
