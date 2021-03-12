@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const shortid = require("shortid");
 
 const adminRegistration =async (req,res)=>{
+    console.log(req.body)
     const {
         firstName,
         lastName,
@@ -17,6 +18,7 @@ const adminRegistration =async (req,res)=>{
    await User.findOne({ email})
     .then(async(user) =>{
         if(user){
+            console.log(user)
             res.status(400).json({ message:'user already exists'})
         }
         else{
@@ -32,7 +34,6 @@ const adminRegistration =async (req,res)=>{
                         email,
                         role:'admin',
                         password:hash,
-                        confirmPassword,
                         profilePicture,
                         contactNumber,
                     })
@@ -52,8 +53,57 @@ const adminRegistration =async (req,res)=>{
     })
     }
 
-
+    const adminLogin = (req, res) => {
+        User.findOne({
+            email: req.body.email
+        }).exec(async (error, user) => {
+            if (error) return res.status(400).json({
+                error
+            });
+            if (user) {
+                const isPassword = await user.authenticate(req.body.password);
+                if (isPassword && user.role === "admin") {
+    
+                    // const token = jwt.sign(
+                    //   { _id: user._id, role: user.role },
+                    //   process.env.JWT_SECRET,
+                    //   { expiresIn: "1d" }
+                    // );
+                    const token = generateJwtToken(user._id, user.role);
+                    const {
+                        _id,
+                        firstName,
+                        lastName,
+                        email,
+                        role,
+                        fullName
+                    } = user;
+                    res.status(200).json({
+                        token,
+                        user: {
+                            _id,
+                            firstName,
+                            lastName,
+                            email,
+                            role,
+                            fullName
+                        },
+                    });
+                } else {
+                    return res.status(400).json({
+                        message: "Something went wrong",
+                    });
+                }
+            } else {
+                return res.status(400).json({
+                    message: "Something went wrong"
+                });
+            }
+        });
+    
+    }
    
     module.exports = {
         adminRegistration,
+        adminLogin
     }
