@@ -16,15 +16,11 @@ const createProduct = async(req, res) => {
     let productPictures = [];
     if (req.files.length > 0) {
         productPictures = req.files.map((file) => {
-            console.log(file,'filee');
-            
             return {
                 img: file.filename
             };
         });
     }
-console.log(productPictures);
-
     const product = new Product({
         name: name,
         slug: slugify(name),
@@ -47,6 +43,35 @@ console.log(productPictures);
         }
     });
 }
+const  getProductDetailsById = (req, res) => {
+    const { productId } = req.params;
+    if (productId) {
+    Product.findOne({ _id: productId }).exec((error, product) => {
+        if (error) return res.status(400).json({ error });
+        if (product) {
+            res.status(200).json({ product });
+        }
+    });
+    } else {
+        return res.status(400).json({ error: "Params required" });
+    }
+};
+const deleteProductById = (req, res) => {
+    const { productId } = req.params;
+    if (productId) {
+        Product.deleteOne({ _id: productId })
+        .exec((error, result) => {
+        if (error) return res.status(400).json({ error });
+        if (result) {
+            res.status(202).json({ result });
+        }
+    });
+    } else {
+        res.status(400).json({ error: "Params required" });
+    }
+};
 module.exports = {
     createProduct,
+    getProductDetailsById,
+    deleteProductById,
 }
