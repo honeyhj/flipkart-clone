@@ -1,7 +1,16 @@
 const User = require("../models/user");
 const bcrypt = require('bcrypt');
 const shortid = require("shortid");
+const jwt = require('jsonwebtoken');
 
+const generateJwtToken = (_id, role) => {
+    return jwt.sign({
+        _id,
+        role
+    }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+    });
+};
 const adminRegistration =async (req,res)=>{
     console.log(req.body)
     const {
@@ -15,14 +24,14 @@ const adminRegistration =async (req,res)=>{
         contactNumber,
     } = req.body;
     
-   await User.findOne({ email})
+    await User.findOne({ email})
     .then(async(user) =>{
         if(user){
             console.log(user)
             res.status(400).json({ message:'user already exists'})
         }
         else{
-           await bcrypt.hash(password,10,(err,hash)=>{
+            await bcrypt.hash(password,10,(err,hash)=>{
                 if(err){
                     res.status(500).json({ message:'error occurred'})
                 }
